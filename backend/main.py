@@ -61,3 +61,24 @@ def create_task(task: Task):
     except Exception as e:
         logging.error(f"Error creating task: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
+import pika
+import threading
+
+def callback(ch, method, properties, body):
+    print("Received task message:", body.decode())
+    # Here you can add logic to process the task message
+
+def rabbitmq_consumer():
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host='rabbitmq'))
+    channel = connection.channel()
+    channel.queue_declare(queue='task_queue', durable=True)
+
+    channel.basic_consume(queue='task_queue', on_message_callback=callback, auto_ack=True)
+    print("Started consuming from RabbitMQ")
+    channel.start_consuming()
+
+# Start consumer in a separate thread when FastAPI app starts
+@app.on_event("startup")
+def startup_event():
+    thread = threading.Thread(target=rabbitmq_consumer, daemon=True)
+    thread.start()
