@@ -5,6 +5,8 @@ import os
 import redis
 import pika
 import json
+import threading
+
 
 app = FastAPI()
 
@@ -61,8 +63,7 @@ def create_task(task: Task):
     except Exception as e:
         logging.error(f"Error creating task: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
-import pika
-import threading
+
 
 def callback(ch, method, properties, body):
     print("Received task message:", body.decode())
