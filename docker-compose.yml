@@ -10,8 +10,12 @@ services:
       - ./backend:/app
     depends_on:
       - mongo
+      - redis
+      - rabbitmq
     environment:
       MONGO_URI: "mongodb://mongo:27017/tododb"
+      REDIS_HOST: "redis"
+      RABBITMQ_HOST: "rabbitmq"
 
   mongo:
     image: mongo:6.0
@@ -21,6 +25,21 @@ services:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
+
+  redis:
+    image: redis:7.0-alpine
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"      # RabbitMQ broker port
+      - "15672:15672"    # RabbitMQ management UI
 
 volumes:
   mongo-data:
