@@ -6,13 +6,16 @@ authors = [
     {name = "Gautham P Raj",email = "gauthampraj2003@gmail.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.12,<4.0"
 dependencies = [
     "fastapi (>=0.115.12,<0.116.0)",
     "uvicorn[standard] (>=0.34.2,<0.35.0)",
     "pymongo (>=4.13.0,<5.0.0)",
     "redis (>=6.1.0,<7.0.0)",
-    "pika (>=1.3.2,<2.0.0)"
+    "pika (>=1.3.2,<2.0.0)",
+    "python-jose[cryptography] (>=3.4.0,<4.0.0)",
+    "passlib[bcrypt] (>=1.7.4,<2.0.0)",
+    "fastapi-security (>=0.5.0,<0.6.0)"
 ]
 
 
